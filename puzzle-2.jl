@@ -44,16 +44,21 @@ part_1_data[3] = 2
 part_1_prog_result = run_program(part_1_data)
 println("$part_1_prog_result")
 
-part_2_target = 19690720
-part_2_program = DelimitedFiles.readdlm("data-2.txt", ',', Int)
+
+
+
 
 function run_with_noun_and_verb(program, noun, verb)
     program[2] = noun
     program[3] = verb
+    println("part 2 program idx 1: $(@sprintf("%s", program[1]))")
     prog_result = run_program(program)
     return prog_result[1]
 end
 
+part_2_target = 19690720
+part_2_program = DelimitedFiles.readdlm("data-2.txt", ',', Int)
+println("part 2 program idx 2: $(@sprintf("%s", part_2_program[2]))")
 for noun in 0:99
     for verb in 0:99
         output = run_with_noun_and_verb(part_2_program, noun, verb)
