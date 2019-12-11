@@ -1,13 +1,16 @@
 using DelimitedFiles
 using Test
 using Printf
+using Logging
 
 part_1_data = DelimitedFiles.readdlm("data-2.txt", ',', Int)
 
 function run_program(program)
+    @debug "Starting program run..." program[1]
     pos = 1
     iteration = 0
     while program[pos] != 99
+        @debug "iteration " iteration
         iteration += 1
         (opcode, loc1, loc2, loc3) = program[pos], program[pos+1], program[pos+2], program[pos+3]
         if opcode == 1
@@ -44,26 +47,22 @@ part_1_data[3] = 2
 part_1_prog_result = run_program(part_1_data)
 println("$part_1_prog_result")
 
-
-
-
-
 function run_with_noun_and_verb(program, noun, verb)
-    program[2] = noun
-    program[3] = verb
-    println("part 2 program idx 1: $(@sprintf("%s", program[1]))")
-    prog_result = run_program(program)
+    op_on = program[:]
+    op_on[2] = noun
+    op_on[3] = verb
+    @debug "run_with_noun_and_verb program idx 1:" op_on[1]
+    prog_result = run_program(op_on)
     return prog_result[1]
 end
 
 part_2_target = 19690720
 part_2_program = DelimitedFiles.readdlm("data-2.txt", ',', Int)
-println("part 2 program idx 2: $(@sprintf("%s", part_2_program[2]))")
 for noun in 0:99
     for verb in 0:99
         output = run_with_noun_and_verb(part_2_program, noun, verb)
         if output == part_2_target
-            print("output: $output - $(@sprintf("%f", 100 * noun + verb))")
+            print("output: $output - $(@sprintf("%s", 100 * noun + verb))")
             break
         end
     end
